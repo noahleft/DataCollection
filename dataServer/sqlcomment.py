@@ -1,24 +1,19 @@
 #!/usr/bin/env python
 
-def getComment(targetNum=4,featureNum=10):
+
+def createSQLtable(cursor,tableName='data',targetNum=4,featureNum=10):
   comment="""
-  CREATE TABLE data(
-  ID   INTEGER PRIMARY KEY AUTOINCREMENT,
-  TARGET1  REAL NOT NULL,
-  TARGET2  REAL NOT NULL,
-  TARGET3  REAL NOT NULL,
-  TARGET4  REAL NOT NULL,
-  FEATURE1 REAL,
-  FEATURE2 REAL,
-  FEATURE3 REAL,
-  FEATURE4 REAL,
-  FEATURE5 REAL,
-  FEATURE6 REAL,
-  FEATURE7 REAL,
-  FEATURE8 REAL,
-  FEATURE9 REAL,
-  FEATURE10 REAL
-  )
-  """
-  return comment
+  CREATE TABLE IF NOT EXISTS config(
+  ID      INTEGER PRIMARY KEY AUTOINCREMENT,
+  NAME    TEXT NOT NULL UNIQUE,
+  TARGET  INTEGER NOT NULL,
+  FEATURE INTEGER NOT NULL
+  )"""
+  cursor.execute(comment)
+  comment="INSERT INTO config (NAME,TARGET,FEATURE) VALUES ("+",".join(list(map(lambda x:str(x),['"'+tableName+'"',targetNum,featureNum])))+");"
+  cursor.execute(comment)
+  comment="CREATE TABLE "+tableName+"(ID   INTEGER PRIMARY KEY AUTOINCREMENT,\n"+ \
+  ",\n".join(list(map(lambda x:"TARGET"+str(x)+" REAL NOT NULL",range(targetNum))))+",\n"+ \
+  ",\n".join(list(map(lambda x:"FEATURE"+str(x)+" REAL ",range(featureNum))))+")"
+  cursor.execute(comment)
 
