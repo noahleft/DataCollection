@@ -1,0 +1,19 @@
+#!/bin/bash
+
+rs=FEATURE0
+
+for index in $(seq 1 3)
+do
+  fea=$(sqlite3 tmp.db "select $rs from data where id=$index")
+  if [ -z $fea ]; then #fea is empty
+    python genParameter.py $rs $index
+    #hspice ro.sp
+    python updateSQL.py $rs $index
+  else #fea is not empty
+    echo fea is $fea
+  fi
+done
+
+
+
+
