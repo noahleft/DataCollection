@@ -5,21 +5,24 @@ from os.path import isfile
 from sqlcomment import createSQLtable
 
 class dataServer:
-  def __init__(self):
-    pass
-  def createService(self,filepath):
-    if isfile(filepath):
-      print 'check file path plz'
+  def __init__(self,tableName='data',targetNum=6,featureNum=10,filepath='tmp.db'):
+    self.tableName=tableName
+    self.targetNum=targetNum
+    self.featureNum=featureNum
+    self.filepath=filepath
+  def createService(self):
+    if isfile(self.filepath):
+      print('check file path plz')
     else:
-      self.conn=connect(filepath)
+      self.conn=connect(self.filepath)
       cursor=self.conn.cursor()
-      createSQLtable(cursor)
+      createSQLtable(cursor,tableName=self.tableName,targetNum=self.targetNum,featureNum=self.featureNum)
       self.conn.commit()
-  def setup(self,filepath):
-    if isfile(filepath):
-      self.conn=connect(filepath)
+  def setup(self):
+    if isfile(self.filepath):
+      self.conn=connect(self.filepath)
     else:
-      self.createService(filepath)
+      self.createService()
   def getNumDataRow(self):
     if self.conn:
       cursor=self.conn.cursor()

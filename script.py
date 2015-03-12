@@ -2,7 +2,9 @@
 
 from dataServer.dataServer import dataServer
 
-data=dataServer()
-data.setup(filepath='tmp.db')
+data=dataServer(tableName='data',targetNum=6,featureNum=10,filepath='tmp.db')
+data.setup()
 
-data.getNumDataRow()
+
+
+
